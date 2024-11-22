@@ -15,7 +15,7 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 
 ### Funcionalidades:
 1. **Carregamento de Dados**:
-   - Utiliza a biblioteca `rasterio` para processar arquivos `.tiff` contendo matrizes de NDVI, LST (temperatura), SWIR e índices de enchentes.
+   - Utiliza a biblioteca `rasterio` para processar arquivos `.tiff` contendo matrizes de NDVI, LST (temperatura), SWIR.
    - Vetoriza as matrizes 2D em vetores 1D para alimentar os modelos de regressão.
 
 2. **Modelos de Regressão**:
