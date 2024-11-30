@@ -18,10 +18,10 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 1. **Carregamento de Dados**:
    - Utiliza a biblioteca `rasterio` para processar arquivos `.tiff` contendo matrizes de NDVI, LST (Temperatura), e SWIR.
    - Vetoriza as matrizes 2D em vetores 1D para alimentar os modelos de regressão.
-
-2. **Expansão da Área de Interesse e Intervalo de Tempo**:
-   - **Área Expandida**: A área de São Paulo foi ampliada para abranger uma região maior, aumentando a abrangência da análise.
-   - **Intervalo de Tempo Estendido**: O período de aquisição de dados foi estendido de um único mês para um ano inteiro, permitindo uma análise mais robusta e representativa.
+   
+2. **Área de Interesse e Intervalo de Tempo**:
+   - **Área de São Paulo**: A análise abrange uma região de São Paulo.
+   - **Intervalo de Tempo**: Os dados foram coletados ao longo de um ano inteiro.
 
 3. **Pré-processamento dos Dados**:
    - **Escalonamento das Features**: Aplica `StandardScaler` para normalizar os dados, melhorando o desempenho dos modelos.
