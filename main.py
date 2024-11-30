@@ -2,12 +2,16 @@ import os
 from dotenv import load_dotenv
 import rasterio
 import numpy as np
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import StandardScaler
 from sentinelhub import SHConfig, SentinelHubRequest, DataCollection, MimeType, CRS, BBox
 from rasterio.transform import from_bounds
+from joblib import dump
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load environment variables
 load_dotenv()
@@ -158,23 +162,67 @@ def main():
         swir_tiff_path = download_tiff_from_sentinelhub(
             bbox, time_interval, config, swir_filename, swir_evalscript, swir_data_collection)
 
-    # Divisão do conjunto de dados
-    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Read NDVI and LST data
+    with rasterio.open(ndvi_tiff_path) as src:
+        ndvi = src.read(1).flatten()
+    
+    with rasterio.open(lst_tiff_path) as src:
+        lst = src.read(1).flatten()
+    
+    # Prepare the dataset
+    # Reshape NDVI for sklearn and handle possible NaN values
+    valid_indices = ~np.isnan(ndvi) & ~np.isnan(lst)
+    X = ndvi[valid_indices].reshape(-1, 1)
+    y = lst[valid_indices]
+    
+    # Feature Scaling
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    # Handle outliers by removing data points where NDVI is beyond 3 standard deviations
+    mean_ndvi = np.mean(X_scaled)
+    std_ndvi = np.std(X_scaled)
+    outlier_indices = np.abs(X_scaled - mean_ndvi) > 3 * std_ndvi
+    outlier_indices = outlier_indices.flatten()  # Flatten to 1D
+    X_filtered = X_scaled[~outlier_indices].reshape(-1, 1)
+    y_filtered = y[~outlier_indices]
+    
+    # Split the dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_filtered, y_filtered, test_size=0.2, random_state=42
+    )
+    
+    # Define the models to be trained
+    models = {
+        "Linear Regression": LinearRegression(),
+        "Ridge Regression": Ridge(alpha=1.0),  # L2 regularization
+        "Random Forest Regressor": RandomForestRegressor(
+            n_estimators=100, random_state=42
+        )
+    }
+    
+    # Train and evaluate each model with cross-validation
+    print("Model Evaluation:")
+    for name, model in models.items():
+        # Perform cross-validation
+        cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring='r2')
+        model.fit(X_train, y_train)
+        mse, r2, _ = evaluate_model(model, X_train, X_test, y_train, y_test)
+        print(f"\n{name}:")
+        print(f"  Cross-Validated R² Scores: {cv_scores}")
+        print(f"  Average Cross-Validated R²: {cv_scores.mean():.2f}")
+        print(f"  Mean Squared Error (MSE): {mse:.2f}")
+        print(f"  R² Score on Test Set: {r2:.2f}")
+    
+    # Save trained models
+    models_dir = os.path.join('results', 'models')
+    os.makedirs(models_dir, exist_ok=True)  # Create models directory if it doesn't exist
 
-    # Modelos a serem testados
-    #models = {
-    #    "Linear Regression": LinearRegression(),
-    #    "Ridge Regression": Ridge(alpha=1.0),  # Regularização L2 para evitar overfitting
-    #    "Random Forest Regressor": RandomForestRegressor(n_estimators=100, random_state=42)
-    #}
-
-    # Avaliação de cada modelo
-    #print("Avaliação dos Modelos:")
-    #for name, model in models.items():
-    #    mse, r2, _ = evaluate_model(model, X_train, X_test, y_train, y_test)
-    #    print(f"\n{name}:")
-    #    print(f"  Mean Squared Error (MSE): {mse:.2f}")
-    #    print(f"  R² Score: {r2:.2f}")
+    for name, model in models.items():
+        model_filename = f"{name.replace(' ', '_').lower()}.joblib"
+        model_path = os.path.join(models_dir, model_filename)
+        dump(model, model_path)
+        print(f"Saved {name} model to {model_path}")
 
 if __name__ == '__main__':
     main()
