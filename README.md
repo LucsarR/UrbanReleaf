@@ -33,7 +33,6 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 
 5. **Avaliação do Desempenho**:
    - Calcula métricas como **Mean Squared Error (MSE)** e **R² Score** para cada modelo.
-   - Gera visualizações de importância das features para os modelos.
 
 6. **Integração com Visualizações**:
    - Passa os resultados para as funções em `testmodel.py` para criar gráficos de desempenho e análise.
