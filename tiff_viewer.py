@@ -24,9 +24,11 @@ def visualize_tiff(file_path, save_dir):
         
         if 'NDVI' in basename:
             plt.imshow(data, cmap=cmap, vmin=-1, vmax=1)
+        elif 'LST' in basename:
+            plt.imshow(data, cmap=cmap, vmin=0, vmax=35)
         else:
             plt.imshow(data, cmap=cmap)
-        
+
         plt.colorbar()
         plt.title(os.path.basename(file_path))
         plt.axis('off')

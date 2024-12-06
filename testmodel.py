@@ -72,7 +72,7 @@ def visualize_predicted_lst(lst_pred, save_dir, filename):
     Visualize the predicted LST and save the plot as a .png file.
     """
     plt.figure(figsize=(10, 10))
-    plt.imshow(lst_pred, cmap='coolwarm')
+    plt.imshow(lst_pred, cmap='coolwarm', vmin=0, vmax=35)
     plt.colorbar(label='LST (°C)')
     plt.title('Predicted Land Surface Temperature (LST)')
     plt.axis('off')
