@@ -1,6 +1,7 @@
 import os
 import rasterio
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 
 def visualize_tiff(file_path, save_dir):
     """
@@ -9,7 +10,23 @@ def visualize_tiff(file_path, save_dir):
     with rasterio.open(file_path) as src:
         data = src.read(1)  # Read the first band
         plt.figure(figsize=(10, 10))
-        plt.imshow(data, cmap='viridis')
+        
+        # Determine the colormap based on file type
+        basename = os.path.basename(file_path)
+        if 'LST' in basename:
+            cmap = 'coolwarm'  # Blue to red
+        elif 'NDVI' in basename:
+            cmap = LinearSegmentedColormap.from_list('ndvi_gradient', ['blue', 'gray', 'green'])
+        elif 'SWIR' in basename:
+            cmap = 'Blues'
+        else:
+            cmap = 'viridis'
+        
+        if 'NDVI' in basename:
+            plt.imshow(data, cmap=cmap, vmin=-1, vmax=1)
+        else:
+            plt.imshow(data, cmap=cmap)
+        
         plt.colorbar()
         plt.title(os.path.basename(file_path))
         plt.axis('off')
