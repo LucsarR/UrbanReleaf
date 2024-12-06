@@ -4,5 +4,4 @@ scikit-learn
 sentinelhub
 joblib
 matplotlib
-seaborn
 python-dotenv

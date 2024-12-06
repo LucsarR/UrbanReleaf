@@ -29,13 +29,11 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 
 4. **Modelos de Regressão**:
    - **Linear Regression**: Modelo básico para identificar relações lineares.
-   - **Ridge Regression**: Adiciona regularização para evitar overfitting.
-   - **Random Forest Regressor**: Modelo não linear que captura padrões complexos.
+   - **SGDRegressor**: Utiliza gradiente descendente estocástico para otimização, adequado para grandes conjuntos de dados.
 
 5. **Avaliação do Desempenho**:
    - Calcula métricas como **Mean Squared Error (MSE)** e **R² Score** para cada modelo.
-   - Implementa validação cruzada (cross-validation) para obter estimativas mais robustas do desempenho dos modelos.
-   - Gera visualizações de importância das features para modelos como Random Forest.
+   - Gera visualizações de importância das features para os modelos.
 
 6. **Integração com Visualizações**:
    - Passa os resultados para as funções em `testmodel.py` para criar gráficos de desempenho e análise.
@@ -50,7 +48,7 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
      ```
 
 2. **Preparação dos Dados**:
-   - O script expandiu a área de São Paulo e estendeu o intervalo de tempo para um ano. Certifique-se de ter capacidade de armazenamento e processamento suficientes para lidar com o volume de dados aumentado.
+   - O script está configurado para a área de São Paulo e o intervalo de tempo para tres anos.
 
 3. **Execução do Script**:
    - Execute o script principal:
@@ -136,7 +134,6 @@ Certifique-se de ter as seguintes bibliotecas instaladas:
 - `sentinelhub`
 - `joblib`
 - `matplotlib`
-- `seaborn`
 - `python-dotenv`
 
 Você pode instalar todas as dependências utilizando o `pip`:

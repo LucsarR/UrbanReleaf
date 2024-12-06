@@ -3,7 +3,6 @@ import rasterio
 import numpy as np
 import matplotlib.pyplot as plt
 from joblib import load
-from sklearn.preprocessing import StandardScaler
 
 def load_scalers(scalers_dir):
     """
