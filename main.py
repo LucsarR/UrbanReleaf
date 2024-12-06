@@ -123,6 +123,11 @@ def main():
     bbox = [-46.76, -23.65, -46.55, -23.43]
     bbox = BBox(bbox, crs=CRS.WGS84)
 
+    ## Definindo a área de interesse (Curitiba)
+    #region_name = 'Curitiba'
+    #bbox = [-49.38, -25.60, -49.24, -25.38]
+    #bbox = BBox(bbox, crs=CRS.WGS84)
+
     # Defining the time interval
     time_interval = ('2020-01-01', '2022-12-31')
 
