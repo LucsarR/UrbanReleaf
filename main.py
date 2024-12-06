@@ -120,7 +120,7 @@ def main():
 
     # Defining the area of interest (São Paulo)
     region_name = 'SaoPaulo'
-    bbox = [-46.693419, -23.568704, -46.623049, -23.511217]
+    bbox = [-46.76, -23.65, -46.55, -23.43]
     bbox = BBox(bbox, crs=CRS.WGS84)
 
     # Defining the time interval
