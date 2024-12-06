@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import rasterio
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression, SGDRegressor  # Corrected module name
+from sklearn.linear_model import LinearRegression, SGDRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from sentinelhub import SHConfig, SentinelHubRequest, DataCollection, MimeType, CRS, BBox
