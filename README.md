@@ -7,7 +7,7 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 ## Estrutura do Projeto
 
 - **`main.py`**: Realiza o processamento dos dados, aplica diferentes modelos de regressão e avalia o desempenho.
-- **`graphs.py`**: Gera gráficos comparativos para facilitar a análise dos resultados dos modelos.
+- **`testmodel.py`**: Executa previsões de LST utilizando modelos treinados e gera visualizações das previsões.
 - **`tiff_viewer.py`**: Visualiza arquivos `.tiff` e salva as visualizações como imagens `.png` para facilitar a inspeção dos dados geoespaciais.
 
 ---
@@ -38,7 +38,7 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
    - Gera visualizações de importância das features para modelos como Random Forest.
 
 6. **Integração com Visualizações**:
-   - Passa os resultados para as funções em `graphs.py` para criar gráficos de desempenho e análise.
+   - Passa os resultados para as funções em `testmodel.py` para criar gráficos de desempenho e análise.
 
 ### Como Executar:
 1. **Configuração Inicial**:
@@ -64,20 +64,37 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 
 ---
 
-## 2. `graphs.py`
+## 2. `testmodel.py`
 
 ### Funcionalidades:
-1. **Plotagem de Desempenho dos Modelos**:
-   - **MSE e R²**: Gera gráficos de barras comparando o Mean Squared Error e o R² Score de cada modelo.
+1. **Carregamento de Modelos e Scalers**:
+   - Carrega os modelos treinados (`linear_regression_model.joblib` e `sgd_regressor_model.joblib`) e os objetos `StandardScaler` para normalização dos dados.
    
-2. **Comparação de Valores Reais vs. Previstos**:
-   - Cria gráficos de dispersão para visualizar a relação entre os valores reais e previstos pelos modelos.
+2. **Pré-processamento dos Dados**:
+   - Processa arquivos `.tiff` de NDVI para preparação dos dados de entrada para os modelos de previsão.
    
-3. **Importância das Features**:
-   - Exibe a importância das features para modelos que suportam essa funcionalidade, como o Random Forest Regressor.
+3. **Previsão de LST**:
+   - Utiliza os modelos treinados para prever a Temperatura da Superfície (LST) a partir dos dados de NDVI escalonados.
+   
+4. **Salvar e Visualizar Predições**:
+   - Salva as predições de LST como arquivos `.tiff` e gera visualizações das predições em formato `.png` para análise.
 
-### Como Utilizar:
-As funções em `graphs.py` são chamadas automaticamente pelo `main.py` após a avaliação dos modelos. Certifique-se de que a biblioteca `matplotlib` e `seaborn` estejam instaladas para gerar as visualizações.
+### Como Executar:
+1. **Configuração Inicial**:
+   - Certifique-se de que os modelos treinados e os scalers estejam salvos nas pastas `results/models/` e `results/scalers/` respectivamente.
+   
+2. **Preparação dos Dados de Teste**:
+   - Coloque os arquivos `.tiff` de NDVI na pasta `testdata/`. O script buscará automaticamente o arquivo disponível.
+   
+3. **Execução do Script**:
+   - Execute o script de predição:
+     ```bash
+     python testmodel.py
+     ```
+   
+4. **Resultados**:
+   - As predições de LST serão salvas na pasta `results/predictions/` como arquivos `.tif`.
+   - As visualizações das predições serão salvas na mesma pasta como arquivos `.png`.
 
 ---
 
