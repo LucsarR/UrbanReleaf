@@ -9,6 +9,7 @@ Este projeto utiliza **técnicas de regressão** para prever a temperatura médi
 - **`main.py`**: Realiza o processamento dos dados, aplica diferentes modelos de regressão e avalia o desempenho.
 - **`testmodel.py`**: Executa previsões de LST utilizando modelos treinados e gera visualizações das previsões.
 - **`tiff_viewer.py`**: Visualiza arquivos `.tiff` e salva as visualizações como imagens `.png` para facilitar a inspeção dos dados geoespaciais.
+- **`examples/`**: Contém exemplos de modelos aplicados às cidades de Curitiba e São Paulo.
 
 ---
 
